@@ -6,25 +6,13 @@ I = im2double(I);
 myfilter = fspecial('gaussian',[3 3], 0.5);
 I = imfilter(I, myfilter, 'replicate');
 
+% odstran nuly koli logu a deleniu
+I(I==0)=1;
+
 [h, w, dim] = size(I);
 R = I(:, :, 1);
 G = I(:, :, 2);
 B = I(:, :, 3);
-
-% odstran nuly koli logu a deleniu
-for i = 1:h
-    for j = 1:w
-        if R(i,j) == 0
-            R(i,j) = 1;
-        end
-        if G(i,j) == 0
-            G(i,j) = 1;
-        end
-        if B(i,j) == 0
-            B(i,j) = 1;
-        end
-    end
-end
     
 % spocitaj si chromaticitu
 [X, Y] = chromaticity2(R, G, B, h, w);
