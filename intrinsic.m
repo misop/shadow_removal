@@ -1,8 +1,8 @@
 function intrinsic( )
 %INTRINSIC Summary of this function goes here
 %   Detailed explanation goes here
-chromaChoice = 2;
-I = imread('1s.jpg');
+chromaChoice = 1;
+I = imread('1.png');
 I = im2double(I);
 myfilter = fspecial('gaussian',[3 3], 0.5);
 I = imfilter(I, myfilter, 'replicate');
@@ -92,9 +92,6 @@ else
     intr = reconstructChromacity2(I, vec, bestTheta);
 end
 intr = uint8(intr);
-intrR = intr(:,:,1);
-intrG = intr(:,:,2);
-intrB = intr(:,:,3);
 figure; imshow(intr);
 %figure; imshow(edge(intr, 'canny'));
 %imag = intr;
