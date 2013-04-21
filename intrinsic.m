@@ -2,7 +2,7 @@ function intrinsic( )
 %INTRINSIC Summary of this function goes here
 %   Detailed explanation goes here
 chromaChoice = 1;
-I = imread('1.png');
+I = imread('2.png');
 I = im2double(I);
 myfilter = fspecial('gaussian',[3 3], 0.5);
 I = imfilter(I, myfilter, 'replicate');
@@ -87,9 +87,9 @@ maxBP = max(bestProj);
 
 intr = [];
 if (chromaChoice == 1)
-    intr = reconstructChromacity1(I, bestTheta, minBP, maxBP);
+    intr = reconstructChromacity1(I, bestTheta, minBP, maxBP, bestProj);
 else
-    intr = reconstructChromacity2(I, vec, bestTheta);
+    intr = reconstructChromacity2(I, vec, bestTheta, minBP, maxBP, bestProj);
 end
 intr = uint8(intr);
 figure; imshow(intr);

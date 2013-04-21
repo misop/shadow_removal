@@ -1,7 +1,13 @@
-function [ intr ] = reconstructChromacity1( I, theta, minBP, maxBP )
+function [ intr ] = reconstructChromacity1( I, theta, minBP, maxBP, bestProj )
 %RECONSTRUCTCHROMACITY1 Summary of this function goes here
 %   Detailed explanation goes here
 [h, w, dim] = size(I);
+bestProj = bestProj ./ maxBP;
+bestProj = bestProj .* 255;
+bestProj = reshape(bestProj, h, w);
+intr = uint8(bestProj);
+return;
+
 u = [cos(theta * pi / 180); sin(theta * pi / 180)];
 intr = uint8(zeros(h, w));
 for i = 1:h

@@ -1,7 +1,12 @@
-function [ intr ] = reconstructChromacity2( I, vec, bestTheta )
+function [ intr ] = reconstructChromacity2( I, vec, bestTheta, minBP, maxBP, bestProj )
 %RECONSTRUCTCHROMACITY2 Summary of this function goes here
 %   Detailed explanation goes here
 [h, w, dim] = size(I);
+bestProj = bestProj ./ maxBP;
+bestProj = bestProj .* 255;
+bestProj = reshape(bestProj, h, w);
+intr = uint8(bestProj);
+return;
 s = h*w;
 v1 = [1/sqrt(2);-1/sqrt(2); 0]';
 v2 = [1/sqrt(6); 1/sqrt(6);-2/sqrt(6)]';
