@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 05-May-2013 20:25:02
+% Last Modified by GUIDE v2.5 05-May-2013 22:27:51
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -118,11 +118,27 @@ function btnCompute_Callback(hObject, eventdata, handles)
 global img;
 global intr;
 waitStart(handles);
-[intr theta] = getIntrinsic(img, 1, 0.00001, true, true);
+
+theta = str2double(get(handles.edit1, 'String'));
+[intr, theta] = getIntrinsic(img, 1, 0.00001, true, true, theta);
+set(handles.edit2, 'String', int2str(theta));
+
 slider2_Callback(hObject, eventdata, handles);
 waitDone(handles);
 figure; imshow(intr);
 
+function btnCompute_Callback2_Callback(hObject, eventdata, handles)
+global img;
+global intr;
+waitStart(handles);
+
+theta = str2double(get(handles.edit1, 'String'));
+[intr, theta] = getIntrinsic(img, 2, 0.00001, true, true, theta);
+set(handles.edit2, 'String', int2str(theta));
+
+slider2_Callback(hObject, eventdata, handles);
+waitDone(handles);
+figure; imshow(intr);
 
 
 function waitStart(handles)
@@ -162,3 +178,49 @@ function btnRemoveShadow_Callback(hObject, eventdata, handles)
 global img;
 global mask;
 pokus(img, mask);
+
+
+
+function edit1_Callback(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit1 as text
+%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit2_Callback(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit2 as text
+%        str2double(get(hObject,'String')) returns contents of edit2 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

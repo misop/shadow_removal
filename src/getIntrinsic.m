@@ -1,4 +1,4 @@
-function [intrinsic, bestTheta] = getIntrinsic(I, chromaticityType, entropyBias, showChromaticity, showEntropy)
+function [intrinsic, bestTheta] = getIntrinsic(I, chromaticityType, entropyBias, showChromaticity, showEntropy, use_theta)
 
 if (size(I,3) ~= 3)
    error('Image is not RGB!'); 
@@ -33,11 +33,17 @@ bestEntropy = inf;
 bestProj = [];
 % premenne pre cyklus
 idx = 1;
-[tmp, num] = size(chromaticityVec);
+[~, num] = size(chromaticityVec);
 l_start = 1; l_end = 180; l_step = 5;
+if((use_theta >= 0) &&  (use_theta < 181))
+    l_start = use_theta;
+    l_end = use_theta;
+    l_step = 1;
+    showEntropy = false;
+end;
 
 % entropia, ktoru potom zobrazim v plote
-entropy = zeros(1, uint16((l_end-l_start) / l_step));
+entropy = zeros(1, uint16((l_end-l_start) / l_step)+1);
 for theta = l_start:l_step:l_end
     x = cos(theta * pi / 180);
     y = sin(theta * pi / 180);
