@@ -43,7 +43,7 @@ if((use_theta >= 0) &&  (use_theta < 181))
 end;
 
 % entropia, ktoru potom zobrazim v plote
-entropy = zeros(1, uint16((l_end-l_start) / l_step)+1);
+entropy = zeros(1, floor((l_end-l_start) / l_step) + 1);
 for theta = l_start:l_step:l_end
     x = cos(theta * pi / 180);
     y = sin(theta * pi / 180);
