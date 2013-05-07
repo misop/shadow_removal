@@ -53,6 +53,7 @@ function GUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % varargin   command line arguments to GUI (see VARARGIN)
 loadImg(handles,'../img/5.png');
 showMask(handles,0);
+showContours(handles,0);
 
 % Choose default command line output for GUI
 handles.output = hObject;
@@ -155,6 +156,10 @@ function showMask(handles, maskImg)
 axes(handles.axes2);
 imshow(maskImg*255);
 
+function showContours(handles, contours)
+axes(handles.axes3);
+imshow(contours);
+
 
 
 function btnCompute_Callback(hObject, eventdata, handles)
@@ -212,8 +217,9 @@ mask = intr - G*val;
 treshold = 25;
 mask(mask<treshold) = 0;
 mask(mask>=treshold) = 1;
-mask = smoothShadowMask(mask);
+[mask contours] = smoothShadowMask(img, mask);
 showMask(handles, mask);
+showContours(handles, contours);
 
 
 
