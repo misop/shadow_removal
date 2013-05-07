@@ -220,7 +220,17 @@ showMask(handles, mask);
 function btnRemoveShadow_Callback(hObject, eventdata, handles)
 global img;
 global mask;
-pokus(img, mask);
+% img2 = img;
+% for i=1:size(img,1)
+%     for j=1:size(img,2)
+%         if mask(i,j)==1
+%             img2(i,j,:) = img(i,j,:)*3;
+%         end
+%     end
+% end
+% figure; imshow(img2);
+ removeShadow(img, mask);
+
 
 
 
