@@ -1,6 +1,9 @@
 function removeShadow2(I, mask, smoothEdges)
 mask = double(mask);
 
+labTransformation = makecform('srgb2lab');
+lab = applycform(I,labTransformation);
+
 [h, w, d] = size(I);
 if(smoothEdges == true)
     Gaus = fspecial('gaussian',[7 7]);
@@ -8,7 +11,7 @@ if(smoothEdges == true)
 end;
 %figure;imshow(mask);
 
-G = rgb2gray(I);
+G = double(rgb2gray(I));
 %figure;imshow(G);
 
 L = watershed(G);
@@ -76,11 +79,18 @@ for i = 1:h
             val = mean(vals2);
         end;
         perc = double(mask(i,j));
-        val = uint8(floor(val * perc));
+%         val = abs(val * perc);
+%         LL(i, j) = uint8(floor(val));
+%         nasob = (G(i,j) + val) / G(i,j);
+%         I(i, j, :) = uint8(I(i, j, :) * nasob);
+        val = uint8(floor(abs(val * perc)));
         LL(i, j) = val;
-        I(i, j, :) = I(i, j, :) + val;
+        lab(i, j, 1) = lab(i, j, 1) + val;
     end;
 end;
+
+labTransformation = makecform('lab2srgb');
+I = applycform(lab,labTransformation);
 
 figure; imshow(LL);
 figure; imshow(I);
