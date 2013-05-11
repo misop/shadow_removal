@@ -1,1 +1,8 @@
 *.asv
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.gz
