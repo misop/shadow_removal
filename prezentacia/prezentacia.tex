@@ -79,6 +79,168 @@
 
 
 
+\begin{frame}
+\odrazka{Hlavný zdroj:}
+G. D. Finlayson, M. S. Drew, C. Lu: \textit{Intrinsic Images by Entropy Minimization}, European Conference on Computer Vision, Vol. 3 (2004), pp. 582-595\\
+\bigskip
+\pause
+\odrazka{Intrinsic image: obrázok nezávislý od svetla, a teda aj zbavený tieňov}
+\pause
+\odrazka{Entropia: \uv{neusporiadanosť, zložitosť} obrázku}
+\end{frame}
+
+
+
+\begin{frame}{Postup}
+\begin{itemize}[<+->]
+\item Nájsť intrinsic obrázok
+\item Na základe neho identifikovať tieň
+\item Odstrániť tieň
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Chromaticity}
+\odrazka[1]{2D chromaticity colour space $\{log(G/R), log(B/R)\}$ \TODO chromaticity2}
+\odrazka[3]{Zmena v osvetlení v praxi zodpovedá posunu v chromatickom priestore jedným smerom (za predpokladu jedného zdroju svetla)}
+\odrazka[4]{Hľadáme orientáciu pixelov v chromatickom priestore}
+\uncover<2->{\includegraphics[width=.9\linewidth]{./img/chromaticity_example}}
+\end{frame}
+
+
+
+\begin{frame}{Hľadanie orientácie}
+\odrazka{Projekciou bodov na priamku vo vhodnom smere $\theta$ získame šedoúrovňový obrázok}
+$$ \mathcal{I} = \chi_1 cos\theta + \chi_2 sin\theta $$
+\pause
+\odrazka{Najvhodnejší smer $\theta$ nájdeme mnimalizáciou entropie}
+$$ -\sum_i p(x_i)*\log p(x_i) $$
+\end{frame}
+
+
+
+\begin{frame}{Výpočet entropie}
+\odrazka{Nepresnosti v reálnych fotkách -- vstupný obrázok vyhladíme Gaussianom}
+\pause
+\odrazka{Vytoríme histogram šedoúrovňového obrázku, vezmeme iba 90\% stredných dát}
+\pause
+\odrazka{\uv{Bin width} histogramu na základe Scottovho pravidla}
+$$ 3.5 std(data)\sqrt[3]{N} $$
+\pause
+\odrazka{po normalizácii histogramu a vylúčení malých hodnôt získame entropiu}
+$$ \eta = - \sum_i p_i \log p_i $$
+\vspace{-.3cm}
+\centerline{$p_i$ -- veľkosť \uv{binov} histogramu}
+\end{frame}
+
+
+
+%rovnaka velkost pisma pre subitemize
+\setbeamerfont*{itemize/enumerate subbody}{parent=itemize/enumerate body}
+
+\begin{frame}{Získanie intrinsic obrázku -- výsledný algoritmus}
+\begin{itemize}[<+->]
+\item Získaj 2D logaritmický chromatický obrázok
+\item for $\theta=1..180$
+\begin{itemize}[<+->]
+\item Získaj šedoúrovňový obrázok $\mathcal{I}$ na základe projekcie bodov pod uhlom $\theta$
+\item Vypočítaj entropiu $\mathcal{I}$
+\item Ak je entropia nižšia ako doterajšie minimum, $\theta$ je najlepší odhad
+\end{itemize}
+\item Na základe najlepšej $\theta$ zrekonštruujeme šedoúrovňový intrinsic obrázok, pridáme energiu tak, aby medián 1\% najjasnejších pixelov mal chromaticitu pôvodného obrázku
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\centerline{\includegraphics[width=.75\linewidth]{./img/example}}
+\end{frame}
+
+\begin{frame}
+\centerline{\includegraphics[width=.9\linewidth]{./img/chromaticity1}}
+\end{frame}
+
+\begin{frame}
+\centerline{\includegraphics[width=.9\linewidth]{./img/chromaticity1_theta}}
+\end{frame}
+
+\begin{frame}
+\centerline{\includegraphics[width=.75\linewidth]{./img/intrinsic}}
+\end{frame}
+
+
+
+\begin{frame}{Identifikácia tieňa}
+\odrazka{Ako získať tieň?}
+\pause
+\odrazka{Intrinsic $-$ X * šedoúrovňový obrázok}
+\pause
+\odrazka{Vyhladenie masky, odstránenie šumu a dier pomocou morfológie}
+\pause
+\bigskip
+\begin{columns}
+\begin{column}{.49\linewidth}
+\centerline{\includegraphics[width=\linewidth]{./img/example}}
+\end{column}
+\begin{column}{.49\linewidth}
+\centerline{\includegraphics[width=\linewidth]{./img/mask}}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}{Odstránenie tieňa}
+\odrazka{Zvolený iný postup ako v pôvodnej práci}
+\bigskip
+\centerline{\includegraphics[width=.75\linewidth]{./img/removal_wtf}}
+\end{frame}
+
+
+
+\begin{frame}{Odstránenie tieňa  (zjednodušená verzia)}
+\odrazka[1]{Nájdeme obrysy tieňa a dotyčnice k nemu}
+\odrazka[2]{Na základe dotyčníc nájdeme pixely z oboch strán obrysov}
+\odrazka[3]{Časť obrazu v tieni prenásobime pomerom priemernej svetlosti pixelov vo svetle a tieni}
+\bigskip
+\uncover<2->{\centerline{\includegraphics[width=.5\linewidth]{./img/dotycnice}}}
+\end{frame}
+
+
+
+\begin{frame}{Odstránenie tieňa}
+\centerline{\includegraphics[width=\linewidth]{./img/result1}}
+\end{frame}
+
+
+
+\begin{frame}{Odstránenie tieňa}
+\odrazka[1]{Problém pri nehomogénnom povrchu}
+\odrazka[2]{Škaredé okraje}
+\odrazka[3]{Pokus o ich vyhladenie vyprodukoval ešte škaredšie okraje}
+\uncover<1->{\centerline{\includegraphics[width=.75\linewidth]{./img/result2}}}
+\end{frame}
+
+
+
+\begin{frame}{Odstránenie tieňa}
+\odrazka{Pokus o zložitejší prístup pomocou watershed segmentácie}
+\pause
+\odrazka{Postupne zosvetliť oblasti v tieni od najsvetlejších okrajov smerom dovnútra}
+\pause
+\odrazka{Horšie výsledky než predošlá metóda}
+\end{frame}
+
+
+
+\begin{frame}
+\vspace{1cm}
+\centerline{\huge\textbf{Ukážka \& Otázky}}
+\vspace{2cm}
+\centerline{\includegraphics[scale=.5]{./img/zaver}}
+\end{frame}
+
 
 
 \end{document}

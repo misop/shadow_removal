@@ -236,7 +236,7 @@ showContours(handles, contours);
 function btnRemoveShadow_Callback(hObject, eventdata, handles)
 global img;
 global mask;
- removeShadow(img, mask, get(handles.checkbox1, 'Value'));
+removeShadow(img, mask, get(handles.checkbox1, 'Value'));
 
 
 
