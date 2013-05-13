@@ -80,8 +80,10 @@
 
 
 \begin{frame}
-\odrazka{Hlavný zdroj:}
+\odrazka{Hlavné zdroje:}
 G. D. Finlayson, M. S. Drew, C. Lu: \textit{Intrinsic Images by Entropy Minimization}, European Conference on Computer Vision, Vol. 3 (2004), pp. 582-595\\
+\medskip
+G. D. Finlayson, M. S. Drew, C. Lu: \textit{Entropy Minimization for Shadow Removal}, Int. J. Comput. Vision, Vol. 85 (2009), pp. 35--57\\
 \bigskip
 \pause
 \odrazka{Intrinsic image: obrázok nezávislý od svetla, a teda aj zbavený tieňov}
@@ -101,10 +103,26 @@ G. D. Finlayson, M. S. Drew, C. Lu: \textit{Intrinsic Images by Entropy Minimiza
 
 
 \begin{frame}{Chromaticity}
-\odrazka[1]{2D chromaticity colour space $\{log(G/R), log(B/R)\}$ \TODO chromaticity2}
-\odrazka[3]{Zmena v osvetlení v praxi zodpovedá posunu v chromatickom priestore jedným smerom (za predpokladu jedného zdroju svetla)}
-\odrazka[4]{Hľadáme orientáciu pixelov v chromatickom priestore}
-\uncover<2->{\includegraphics[width=.9\linewidth]{./img/chromaticity_example}}
+\odrazka{Špecifikácia farby nezávisle na osvetlení}
+\pause
+\odrazka{Chromaticity colour space
+\begin{enumerate}
+\item greyscale 1D invariant chromaticity\\
+$\{log(G/R), log(B/R)\}$
+\item 2D invariant L1 chromaticity\\
+$X = [\log(R/\sqrt[3]{R*G*B}), \log(G/\sqrt[3]{R*G*B}), \log(B/\sqrt[3]{R*G*B})]$\\
+$\{ [\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}, 0] * X^T,  [\frac{1}{\sqrt{6}}, -\frac{1}{\sqrt{6}}, -\frac{2}{\sqrt{6}}] * X^T \}$
+\end{enumerate}
+}
+\end{frame}
+
+
+
+\begin{frame}{Chromaticity}
+\odrazka[1]{Zmena v osvetlení v praxi zodpovedá posunu v chromatickom priestore jedným smerom (za predpokladu jedného zdroju svetla)}
+\odrazka[2]{Hľadáme orientáciu pixelov v chromatickom priestore}
+\vspace{-.1cm}
+\uncover<1->{\centerline{\includegraphics[width=.75\linewidth]{./img/chromaticity_example}}}
 \end{frame}
 
 
@@ -230,6 +248,8 @@ $$ \eta = - \sum_i p_i \log p_i $$
 \odrazka{Postupne zosvetliť oblasti v tieni od najsvetlejších okrajov smerom dovnútra}
 \pause
 \odrazka{Horšie výsledky než predošlá metóda}
+\bigskip
+\centerline{\includegraphics[width=.5\linewidth]{./img/result1_watershed}}
 \end{frame}
 
 
